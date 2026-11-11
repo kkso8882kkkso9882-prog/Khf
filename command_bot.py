@@ -116,12 +116,21 @@ async def on_message(message: discord.Message):
 
 def main() -> None:
     if not TOKEN:
-        print(
-            "ยังไม่มี DISCORD_TOKEN\n"
-            "ตั้งค่า:  export DISCORD_TOKEN='...'\n"
-            "หรือใส่ใน environment / secret ของเครื่องที่รันบอท"
-        )
+        print("=" * 60)
+        print("ERROR: ยังไม่มี DISCORD_TOKEN")
+        print()
+        print("บน bot-hosting.net:")
+        print("  1. ไปที่แท็บ Environment / Variables")
+        print("  2. เพิ่มตัวแปรชื่อ DISCORD_TOKEN")
+        print("  3. วางโทเคนบอทจาก Discord Developer Portal")
+        print("  4. เปิด Message Content Intent ด้วย")
+        print("  5. Restart บอท")
+        print()
+        print("หรือตั้งใน shell:  export DISCORD_TOKEN='your_token_here'")
+        print("=" * 60)
         sys.exit(1)
+
+    print(f"[startup] เริ่มบอท... (prefix: {', '.join(PREFIXES)})")
     bot.run(TOKEN)
 
 
