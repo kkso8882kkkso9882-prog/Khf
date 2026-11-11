@@ -165,3 +165,26 @@ executor-watch/
 - Executor เป็นโปรแกรมที่ละเมิดข้อกำหนดการใช้งานของ Roblox การใช้เสี่ยงถูกแบนบัญชี และไฟล์จากแหล่งไม่เป็นทางการ
   มักมีมัลแวร์ปนมาบ่อย ๆ — ถ้าจะใช้ ให้ใช้บัญชีสำรองและตรวจไฟล์ก่อนทุกครั้ง
 - ถ้า API ล่มหรือเปลี่ยนรูปแบบ บอทจะลองใหม่อัตโนมัติ 3 ครั้งแล้วแจ้ง error ใน log (ไม่ส่งข้อความขยะเข้า Discord)
+
+---
+
+## คำสั่งใน Discord (`.op` / `see`)
+
+บอร์ดสถานะอัตโนมัติใช้ **Webhook** (รันบน GitHub Actions)
+
+ถ้าต้องการพิมพ์คำสั่งแล้วให้บอทตอบกลับ **เฉพาะคนที่พิมพ์** ใช้สคริปต์ `command_bot.py` รันค้างแยกต่างหาก:
+
+1. สร้าง Discord Application → Bot → เปิด **Message Content Intent**
+2. เชิญบอทเข้าเซิร์ฟเวอร์ (สิทธิ์ Send Messages)
+3. ตั้งค่า token แล้วรัน:
+
+```bash
+pip install -r requirements.txt
+export DISCORD_TOKEN="ใส่โทเคนบอท"
+python3 command_bot.py
+```
+
+คำสั่งที่รองรับ: `.op`  `see`  `.see`
+
+(รันบน VPS / คอมที่เปิดทิ้งไว้ / Railway / Replit — GitHub Actions ใช้เป็น listener 24 ชม. ไม่ได้)
+
