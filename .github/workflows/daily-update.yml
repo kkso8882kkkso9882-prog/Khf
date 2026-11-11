@@ -1,9 +1,9 @@
-name: Executor status board (every 15 min)
+name: Executor status board (every 2 min)
 
 on:
   schedule:
-    # ทุก 15 นาที
-    - cron: "*/15 * * * *"
+    # ทุก 2 นาที
+    - cron: "*/2 * * * *"
   workflow_dispatch:
     inputs:
       force:
