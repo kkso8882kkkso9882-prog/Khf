@@ -1,0 +1,25 @@
+# Local config & secrets
+config.json
+
+# Runtime state (committed by GitHub Actions only)
+# state.json is intentionally tracked when Actions updates it
+
+# Reports (kept as Actions artifacts)
+reports/
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.Python
+*.egg-info/
+.venv/
+venv/
+.env
+
+# OS / editor
+.DS_Store
+Thumbs.db
+*.swp
+.idea/
+.vscode/

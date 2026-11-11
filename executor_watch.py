@@ -49,7 +49,7 @@ REPORT_DIR = SCRIPT_DIR / "reports"
 
 API_EXPLOITS = "https://weao.xyz/api/status/exploits"
 API_VERSIONS = "https://weao.xyz/api/versions/current"
-USER_AGENT = "executor-watch/1.1 (personal Discord status bot)"
+USER_AGENT = "executor-watch/1.2 (personal Discord status bot)"
 BROWSER_UA = (
     "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
     "(KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"

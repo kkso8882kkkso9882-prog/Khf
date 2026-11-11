@@ -23,21 +23,38 @@ jobs:
         with:
           python-version: "3.12"
 
+      - name: Check Discord webhook secret
+        env:
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+        run: |
+          if [ -z "$DISCORD_WEBHOOK_URL" ]; then
+            echo "::error::ยังไม่ได้ตั้ง secret DISCORD_WEBHOOK_URL"
+            echo "ไปที่ Settings → Secrets and variables → Actions → New repository secret"
+            echo "Name: DISCORD_WEBHOOK_URL"
+            echo "แล้ววาง webhook URL ของ Discord"
+            exit 1
+          fi
+          echo "พบ webhook secret แล้ว"
+
       - name: Run bot
         env:
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
-        run: python executor_watch.py
+        run: python -u executor_watch.py
 
       - name: Save state back to the repo
         run: |
           git config user.name "executor-watch-bot"
           git config user.email "actions@users.noreply.github.com"
-          git add state.json
-          if git diff --cached --quiet; then
-            echo "state ไม่เปลี่ยน"
+          if [ -f state.json ]; then
+            git add state.json
+            if git diff --cached --quiet; then
+              echo "state ไม่เปลี่ยน"
+            else
+              git commit -m "chore: update executor state $(date -u +%F)"
+              git push
+            fi
           else
-            git commit -m "chore: update executor state $(date -u +%F)"
-            git push
+            echo "ไม่มี state.json (อาจเกิด error ก่อนหน้า)"
           fi
 
       - name: Keep the daily report
