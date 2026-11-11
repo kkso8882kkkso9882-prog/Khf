@@ -1,5 +1,5 @@
 {
-  "collected_at": "2026-11-11T03:58:22.671582+00:00",
+  "collected_at": "2026-11-11T04:01:15.435564+00:00",
   "rbx": {
     "Windows": {
       "version": "version-4ea8e85481e34f46",
@@ -590,6 +590,14 @@
     "xeno|windows": "https://www.xeno.now/images/xenos.png",
     "madium|windows": "https://i.imgur.com/KgLS9t4.png",
     "axis|windows": "https://useaxis.cc/public/axisico.ico",
-    "matrix-hub|windows": "https://icons.duckduckgo.com/ip3/matrixhubs.shop.ico"
+    "matrix-hub|windows": "https://icons.duckduckgo.com/ip3/matrixhubs.shop.ico",
+    "dx9ware-v2|windows": "https://icons.duckduckgo.com/ip3/cultofintellect.com.ico",
+    "lucid|windows": "https://getlucid.gg/assets/images/brand/favicon.png",
+    "photon|windows": "https://photons.solutions/logo.png",
+    "athena|windows": "https://getathena.gg/apple-touch-icon.png",
+    "matcha|windows": "https://cdn.discordapp.com/splashes/1420041567481364703/a5defe5c42a47c9941e6ede492a51cb4.jpg?size=512",
+    "serotonin|windows": "https://www.serotonin.win/favicon.ico?favicon.6af32af9.ico",
+    "sirhurt|windows": "https://icons.duckduckgo.com/ip3/sirhurt.net.ico",
+    "delta|android": "https://deltaexploits.gg/assets/favicon.ico"
   }
 }
