@@ -598,7 +598,21 @@
     "matcha|windows": "https://cdn.discordapp.com/splashes/1420041567481364703/a5defe5c42a47c9941e6ede492a51cb4.jpg?size=512",
     "serotonin|windows": "https://www.serotonin.win/favicon.ico?favicon.6af32af9.ico",
     "sirhurt|windows": "https://icons.duckduckgo.com/ip3/sirhurt.net.ico",
-    "delta|android": "https://deltaexploits.gg/assets/favicon.ico"
+    "delta|android": "https://deltaexploits.gg/assets/favicon.ico",
+    "delta|ios": "https://cdn.weao.gg/slug/delta/logo.png",
+    "isaeva|windows": "https://cdn.weao.gg/slug/isaeva/logo.png",
+    "macsploit|mac": "https://cdn.weao.gg/slug/macsploit/logo.png",
+    "madius|windows": "https://icons.duckduckgo.com/ip3/madius.dev.ico",
+    "melatonin|windows": "https://2240722588-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2FafiYeN5AiNrv7CQ28eRn%2Fsocialpreview%2FZ7sOsYnCEKAmnMkqv41E%2Fmela.png?alt=media&token=a08f75f3-9841-4dc6-a5ad-356be7dd6c35",
+    "opiumware|mac": "https://cdn.weao.gg/slug/opiumware/logo.png",
+    "potassium|windows": "https://cdn.weao.gg/slug/potassium/logo.png",
+    "real|windows": "https://cdn.weao.gg/slug/real/logo.png",
+    "seliware|windows": "https://cdn.weao.gg/slug/seliware/logo.png",
+    "severe|windows": "https://www.google.com/s2/favicons?domain=discord.gg&sz=128",
+    "synapse-z|windows": "https://icons.duckduckgo.com/ip3/z.synapse.do.ico",
+    "velocity|windows": "https://cdn.weao.gg/slug/velocity/logo.png",
+    "volt|windows": "https://cdn.weao.gg/slug/volt/logo.png",
+    "wave|windows": "https://cdn.weao.gg/slug/wave/logo.png"
   },
   "discord_message_ids": [
     "1569928113981362282",
