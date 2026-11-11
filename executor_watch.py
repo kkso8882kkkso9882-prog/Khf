@@ -71,7 +71,7 @@ DEFAULT_CONFIG = {
     "notify_patched": True,
     "notify_outdated": True,
     "attach_logos": True,
-    "max_detail_embeds": 10,
+    "max_detail_embeds": 30,
     "write_reports": True,
     "timezone_offset_hours": 7,
 }
@@ -611,14 +611,22 @@ def build_embeds(
     detail_pairs: list[tuple[dict, str]] = []
     for kind in ("new_version", "patched", "outdated"):
         detail_pairs += [(r, kind) for r in changes.get(kind, [])]
-    if (full or not detail_pairs) and not detail_pairs:
+    if full and not any(changes.get(k) for k in ("new_version", "patched", "outdated")):
+        # รอบสรุปเต็ม / ไม่มีการเปลี่ยนแปลง → แสดงการ์ดรายตัวของทุกตัวที่ยังใช้ได้
         ready = sorted(
             (r for r in ex.values() if r["updated"]),
             key=lambda r: parse_ts(r.get("updated_at")) or datetime.min.replace(tzinfo=timezone.utc),
             reverse=True,
         )
-        detail_pairs = [(r, "patched") for r in ready[:8]]
-    limit = max(0, int(cfg.get("max_detail_embeds", 10) or 0))
+        detail_pairs = [(r, "patched") for r in ready]
+    elif (full or not detail_pairs) and not detail_pairs:
+        ready = sorted(
+            (r for r in ex.values() if r["updated"]),
+            key=lambda r: parse_ts(r.get("updated_at")) or datetime.min.replace(tzinfo=timezone.utc),
+            reverse=True,
+        )
+        detail_pairs = [(r, "patched") for r in ready[:12]]
+    limit = max(0, int(cfg.get("max_detail_embeds", 30) or 0))
     detail_pairs = detail_pairs[:limit]
 
     attach_logos = bool(cfg.get("attach_logos", True))

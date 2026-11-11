@@ -4,7 +4,13 @@ on:
   schedule:
     # ทุกวัน 01:00 UTC = 08:00 น. เวลาไทย
     - cron: "0 1 * * *"
-  workflow_dispatch: {}
+  workflow_dispatch:
+    inputs:
+      force:
+        description: "ส่งสรุปเต็มทุกตัว (แม้ไม่มีการเปลี่ยนแปลง)"
+        required: false
+        default: "false"
+        type: boolean
 
 permissions:
   contents: write
@@ -39,7 +45,13 @@ jobs:
       - name: Run bot
         env:
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
-        run: python -u executor_watch.py
+        run: |
+          EXTRA=""
+          if [ "${{ github.event.inputs.force }}" = "true" ]; then
+            EXTRA="--force"
+            echo "โหมด force: ส่งสรุปเต็ม"
+          fi
+          python -u executor_watch.py $EXTRA
 
       - name: Save state back to the repo
         run: |

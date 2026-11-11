@@ -7,7 +7,7 @@
   "notify_patched": true,
   "notify_outdated": true,
   "attach_logos": true,
-  "max_detail_embeds": 10,
+  "max_detail_embeds": 30,
   "write_reports": true,
   "timezone_offset_hours": 7
 }
