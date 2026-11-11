@@ -1,5 +1,5 @@
 {
-  "collected_at": "2026-11-11T04:01:15.435564+00:00",
+  "collected_at": "2026-11-11T04:13:50.088796+00:00",
   "rbx": {
     "Windows": {
       "version": "version-4ea8e85481e34f46",
@@ -599,5 +599,10 @@
     "serotonin|windows": "https://www.serotonin.win/favicon.ico?favicon.6af32af9.ico",
     "sirhurt|windows": "https://icons.duckduckgo.com/ip3/sirhurt.net.ico",
     "delta|android": "https://deltaexploits.gg/assets/favicon.ico"
-  }
+  },
+  "discord_message_ids": [
+    "1569928113981362282",
+    "1569928115701026908",
+    "1569928116732698786"
+  ]
 }
