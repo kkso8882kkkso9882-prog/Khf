@@ -1,0 +1,49 @@
+name: Daily executor update bot
+
+on:
+  schedule:
+    # ทุกวัน 01:00 UTC = 08:00 น. เวลาไทย
+    - cron: "0 1 * * *"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+concurrency:
+  group: executor-watch
+  cancel-in-progress: false
+
+jobs:
+  watch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Run bot
+        env:
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+        run: python executor_watch.py
+
+      - name: Save state back to the repo
+        run: |
+          git config user.name "executor-watch-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add state.json
+          if git diff --cached --quiet; then
+            echo "state ไม่เปลี่ยน"
+          else
+            git commit -m "chore: update executor state $(date -u +%F)"
+            git push
+          fi
+
+      - name: Keep the daily report
+        uses: actions/upload-artifact@v4
+        with:
+          name: executor-report-${{ github.run_id }}
+          path: reports/
+          if-no-files-found: ignore
+          retention-days: 30

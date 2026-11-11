@@ -1,0 +1,13 @@
+{
+  "discord_webhook_url": "https://discord.com/api/webhooks/XXXXXXXX/YYYYYYYY",
+  "discord_username": "Roblox Executor Watch",
+  "platforms": ["Windows", "Mac", "Android", "iOS"],
+  "include_externals": true,
+  "notify_new_version": true,
+  "notify_patched": true,
+  "notify_outdated": true,
+  "attach_logos": true,
+  "max_detail_embeds": 10,
+  "write_reports": true,
+  "timezone_offset_hours": 7
+}
