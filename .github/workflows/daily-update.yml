@@ -1,13 +1,13 @@
-name: Daily executor update bot
+name: Executor status board (every 15 min)
 
 on:
   schedule:
-    # ทุกวัน 01:00 UTC = 08:00 น. เวลาไทย
-    - cron: "0 1 * * *"
+    # ทุก 15 นาที
+    - cron: "*/15 * * * *"
   workflow_dispatch:
     inputs:
       force:
-        description: "ส่งสรุปเต็มทุกตัว (แม้ไม่มีการเปลี่ยนแปลง)"
+        description: "บังคับรีเฟรช (ปกติรีเฟรชอยู่แล้ว)"
         required: false
         default: "false"
         type: boolean
@@ -49,7 +49,7 @@ jobs:
           EXTRA=""
           if [ "${{ github.event.inputs.force }}" = "true" ]; then
             EXTRA="--force"
-            echo "โหมด force: ส่งสรุปเต็ม"
+            echo "โหมด force"
           fi
           python -u executor_watch.py $EXTRA
 
@@ -62,11 +62,11 @@ jobs:
             if git diff --cached --quiet; then
               echo "state ไม่เปลี่ยน"
             else
-              git commit -m "chore: update executor state $(date -u +%F)"
+              git commit -m "chore: update executor state $(date -u +%F %H:%M)"
               git push
             fi
           else
-            echo "ไม่มี state.json (อาจเกิด error ก่อนหน้า)"
+            echo "ไม่มี state.json"
           fi
 
       - name: Keep the daily report
@@ -75,4 +75,4 @@ jobs:
           name: executor-report-${{ github.run_id }}
           path: reports/
           if-no-files-found: ignore
-          retention-days: 30
+          retention-days: 7

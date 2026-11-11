@@ -659,19 +659,8 @@ def build_embeds(
     return embeds
 
 
-def post_discord(webhook: str, embeds: list[dict], username: str, dry_run: bool = False) -> None:
-    if dry_run:
-        log("— โหมดทดสอบ: ข้อความที่จะส่งเข้า Discord —")
-        print(json.dumps({"username": username, "embeds": embeds}, ensure_ascii=False, indent=2))
-        return
-    if not webhook:
-        raise SystemExit(
-            "ยังไม่ได้ตั้งค่า webhook\n"
-            "ใส่ URL ใน config.json (ช่อง discord_webhook_url) "
-            "หรือตั้งตัวแปรสภาพแวดล้อม DISCORD_WEBHOOK_URL"
-        )
-
-    # Discord จำกัด 10 embed ต่อข้อความ และ ~6000 ตัวอักษรรวม
+def _split_batches(embeds: list[dict]) -> list[list[dict]]:
+    """แบ่ง embed เป็นชุดละไม่เกิน 10 ตัว / ~5500 ตัวอักษร (ข้อจำกัด Discord)"""
     batches: list[list[dict]] = []
     current: list[dict] = []
     size = 0
@@ -684,25 +673,78 @@ def post_discord(webhook: str, embeds: list[dict], username: str, dry_run: bool 
         size += length
     if current:
         batches.append(current)
+    return batches
 
-    for index, batch in enumerate(batches, start=1):
-        payload = json.dumps({"username": username, "embeds": batch}, ensure_ascii=False).encode("utf-8")
-        req = request.Request(
-            webhook,
-            data=payload,
-            headers={"Content-Type": "application/json", "User-Agent": USER_AGENT},
-            method="POST",
+
+def _webhook_request(url: str, method: str, payload: bytes | None = None) -> dict | None:
+    headers = {"Content-Type": "application/json", "User-Agent": USER_AGENT}
+    req = request.Request(url, data=payload, headers=headers, method=method)
+    try:
+        with request.urlopen(req, timeout=30) as resp:
+            body = resp.read()
+            if not body:
+                return None
+            return json.loads(body.decode("utf-8", "replace"))
+    except error.HTTPError as exc:
+        body = exc.read().decode("utf-8", "replace")[:400]
+        if method == "PATCH" and exc.code in (404, 400):
+            return None  # ข้อความเก่าหายหรือแก้ไม่ได้ → ให้ caller ส่งใหม่
+        raise SystemExit(f"Discord {method} ล้มเหลว ({exc.code}): {body}")
+    except error.URLError as exc:
+        raise SystemExit(f"เชื่อมต่อ Discord ไม่ได้: {exc.reason}")
+
+
+def post_discord(
+    webhook: str,
+    embeds: list[dict],
+    username: str,
+    dry_run: bool = False,
+    previous_ids: list[str] | None = None,
+) -> list[str]:
+    """ส่งหรือแก้ไขข้อความ Discord แล้วคืน list ของ message id ที่ใช้จริง"""
+    if dry_run:
+        log("— โหมดทดสอบ: ข้อความที่จะส่งเข้า Discord —")
+        print(json.dumps({"username": username, "embeds": embeds}, ensure_ascii=False, indent=2))
+        return list(previous_ids or [])
+
+    if not webhook:
+        raise SystemExit(
+            "ยังไม่ได้ตั้งค่า webhook\n"
+            "ใส่ URL ใน config.json (ช่อง discord_webhook_url) "
+            "หรือตั้งตัวแปรสภาพแวดล้อม DISCORD_WEBHOOK_URL"
         )
+
+    batches = _split_batches(embeds)
+    previous_ids = list(previous_ids or [])
+    new_ids: list[str] = []
+    base = webhook.rstrip("/")
+
+    for index, batch in enumerate(batches):
+        payload = json.dumps({"username": username, "embeds": batch}, ensure_ascii=False).encode("utf-8")
+        msg_id = previous_ids[index] if index < len(previous_ids) else None
+        edited = False
+        if msg_id:
+            result = _webhook_request(f"{base}/messages/{msg_id}", "PATCH", payload)
+            if result and result.get("id"):
+                new_ids.append(str(result["id"]))
+                edited = True
+                log(f"แก้ไขข้อความที่ {index + 1}/{len(batches)} แล้ว ({len(batch)} embed)")
+        if not edited:
+            # ส่งใหม่ (ใช้ ?wait=true เพื่อได้ message id กลับมา)
+            result = _webhook_request(f"{base}?wait=true", "POST", payload)
+            if result and result.get("id"):
+                new_ids.append(str(result["id"]))
+            log(f"ส่งข้อความใหม่ที่ {index + 1}/{len(batches)} แล้ว ({len(batch)} embed)")
+
+    # ลบข้อความเก่าส่วนเกิน (ถ้ามีมากกว่าจำนวน batch รอบนี้)
+    for extra_id in previous_ids[len(batches):]:
         try:
-            with request.urlopen(req, timeout=30) as resp:
-                if resp.status not in (200, 204):
-                    log(f"Discord ตอบกลับสถานะ {resp.status}")
-        except error.HTTPError as exc:
-            body = exc.read().decode("utf-8", "replace")[:400]
-            raise SystemExit(f"ส่งเข้า Discord ไม่สำเร็จ ({exc.code}): {body}")
-        except error.URLError as exc:
-            raise SystemExit(f"เชื่อมต่อ Discord ไม่ได้: {exc.reason}")
-        log(f"ส่งข้อความที่ {index}/{len(batches)} แล้ว ({len(batch)} embed)")
+            _webhook_request(f"{base}/messages/{extra_id}", "DELETE")
+            log(f"ลบข้อความเก่า {extra_id[:8]}…")
+        except SystemExit:
+            pass  # ลบไม่ได้ก็ข้าม
+
+    return new_ids
 
 
 # --------------------------------------------------------------------------
@@ -858,18 +900,27 @@ def main(argv: list[str] | None = None) -> int:
         if paths:
             log(f"เขียนรายงาน: {paths[0].name}, {paths[1].name}")
 
-    should_post = (not args.report_only) and (first_run or args.force or has_changes(changes))
+    # โหมดบอร์ดสถานะ: รีเฟรชข้อความทุกครั้ง (แก้ข้อความเดิม)
+    # ใช้ full=True เสมอเพื่อให้เห็นการ์ดทุกตัวที่ยังใช้ได้
+    should_post = not args.report_only
+    message_ids: list[str] = list(prev.get("discord_message_ids") or [])
     if should_post:
-        embeds = build_embeds(cur, changes, cfg, full=first_run or args.force, logos=logos)
-        post_discord(cfg["discord_webhook_url"], embeds, cfg.get("discord_username", "Executor Watch"),
-                     dry_run=args.dry_run)
+        embeds = build_embeds(cur, changes, cfg, full=True, logos=logos)
+        message_ids = post_discord(
+            cfg["discord_webhook_url"],
+            embeds,
+            cfg.get("discord_username", "Executor Watch"),
+            dry_run=args.dry_run,
+            previous_ids=message_ids,
+        )
         if logos.fetched:
             log(f"ดึงโลโก้ใหม่ {logos.fetched} เจ้า (เก็บไว้ใช้รอบหน้าด้วย)")
-    elif not args.report_only:
-        log("ไม่มีการเปลี่ยนแปลง — ไม่ส่งข้อความ")
+    else:
+        log("โหมด report-only — ไม่แตะ Discord")
 
     if not args.no_save:
         cur["logos"] = logos.export()
+        cur["discord_message_ids"] = message_ids
         save_state(cur)
         log("บันทึกสถานะล่าสุดลง state.json แล้ว")
     return 0

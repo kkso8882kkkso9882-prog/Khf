@@ -83,7 +83,7 @@ python3 executor_watch.py             # ตรวจ + ส่ง Discord ถ้�
 ### วิธี A: GitHub Actions — ฟรี ไม่ต้องเปิดคอมทิ้งไว้ (แนะนำ)
 
 ในโฟลเดอร์มีไฟล์ `.github/workflows/daily-update.yml` เตรียมไว้แล้ว ตั้งเวลาไว้ที่
-**01:00 UTC = 08:00 น. เวลาไทย** ทุกวัน
+**ทุก 15 นาที** (cron `*/15 * * * *`)
 
 1. สร้าง repository ใหม่บน GitHub (private ก็ได้) แล้วอัปโหลดไฟล์ทั้งหมดขึ้นไป
 2. ไปที่ **Settings → Secrets and variables → Actions → New repository secret**
@@ -92,8 +92,9 @@ python3 executor_watch.py             # ตรวจ + ส่ง Discord ถ้�
 3. ไปที่แท็บ **Actions** → เลือก workflow **Daily executor update bot** → **Enable workflow**
 4. กด **Run workflow** หนึ่งครั้งเพื่อทดสอบ จากนั้นมันจะรันเองทุกวัน
 
-workflow จะ commit `state.json` กลับเข้า repo เพื่อจำสถานะข้ามวัน และเก็บรายงานรายวันไว้เป็น artifact 30 วัน
-(ถ้าอยากเปลี่ยนเวลา แก้บรรทัด `cron: "0 1 * * *"` — เวลาต้องเป็น UTC เช่น `0 13 * * *` = 20:00 น. ไทย)
+workflow จะ **แก้ไขข้อความเดิม** ใน Discord แทนการส่งซ้ำ (เก็บ message id ไว้ใน `state.json`) และ commit state กลับเข้า repo
+เก็บรายงานเป็น artifact 7 วัน
+(ถ้าอยากเปลี่ยนความถี่ แก้ `cron: "*/15 * * * *"`)
 
 ### วิธี B: Windows Task Scheduler
 
