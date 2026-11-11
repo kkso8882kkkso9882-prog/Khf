@@ -736,14 +736,8 @@ def post_discord(
                 new_ids.append(str(result["id"]))
             log(f"ส่งข้อความใหม่ที่ {index + 1}/{len(batches)} แล้ว ({len(batch)} embed)")
 
-    # ลบข้อความเก่าส่วนเกิน (ถ้ามีมากกว่าจำนวน batch รอบนี้)
-    for extra_id in previous_ids[len(batches):]:
-        try:
-            _webhook_request(f"{base}/messages/{extra_id}", "DELETE")
-            log(f"ลบข้อความเก่า {extra_id[:8]}…")
-        except SystemExit:
-            pass  # ลบไม่ได้ก็ข้าม
-
+    # ไม่ลบข้อความเก่าเลย — ถ้าจำนวนข้อความลดลงก็ปล่อยข้อความเก่าไว้
+    # (กันกรณีจำนวน embed เปลี่ยนแล้วไปลบข้อความที่ยังอยากเก็บ)
     return new_ids
 
 
