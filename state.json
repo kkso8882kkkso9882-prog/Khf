@@ -1,5 +1,5 @@
 {
-  "collected_at": "2026-11-12T18:11:59.876339+00:00",
+  "collected_at": "2026-11-12T23:39:12.018095+00:00",
   "rbx": {
     "Windows": {
       "version": "version-4ea8e85481e34f46",
@@ -440,9 +440,9 @@
     "madium|windows": {
       "name": "Madium",
       "platform": "Windows",
-      "version": "2.9.0",
+      "version": "2.9.1",
       "updated": true,
-      "updated_at": "2026-11-11T16:29:00+00:00",
+      "updated_at": "2026-11-12T19:53:00+00:00",
       "rbx_version": "version-4ea8e85481e34f46",
       "sunc": 100,
       "free": true,
@@ -615,9 +615,7 @@
     "wave|windows": "https://cdn.weao.gg/slug/wave/logo.png"
   },
   "discord_message_ids": [
-    "1570501432984211518",
-    "1570501434846486718",
-    "1570501436029149202",
-    "1570501437106946139"
+    "1570583776008998933",
+    "1570583779557384223"
   ]
 }
