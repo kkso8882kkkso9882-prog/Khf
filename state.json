@@ -1,5 +1,5 @@
 {
-  "collected_at": "2026-11-12T23:39:12.018095+00:00",
+  "collected_at": "2026-11-13T03:35:28.931200+00:00",
   "rbx": {
     "Windows": {
       "version": "version-4ea8e85481e34f46",
@@ -170,9 +170,9 @@
     "velocity|windows": {
       "name": "Velocity",
       "platform": "Windows",
-      "version": "1.6.1",
+      "version": "1.6.2",
       "updated": true,
-      "updated_at": "2026-11-11T10:30:00+00:00",
+      "updated_at": "2026-11-13T02:34:00+00:00",
       "rbx_version": "version-4ea8e85481e34f46",
       "sunc": 100,
       "free": true,
@@ -615,7 +615,7 @@
     "wave|windows": "https://cdn.weao.gg/slug/wave/logo.png"
   },
   "discord_message_ids": [
-    "1570583776008998933",
-    "1570583779557384223"
+    "1570643238732308572",
+    "1570643241580105882"
   ]
 }
