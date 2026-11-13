@@ -1,5 +1,5 @@
 {
-  "collected_at": "2026-11-13T03:35:28.931200+00:00",
+  "collected_at": "2026-11-13T11:29:34.288190+00:00",
   "rbx": {
     "Windows": {
       "version": "version-4ea8e85481e34f46",
@@ -351,9 +351,9 @@
       "name": "Severe",
       "platform": "Windows",
       "version": "v2",
-      "updated": false,
-      "updated_at": "2026-11-06T00:16:00+00:00",
-      "rbx_version": "version-f0ea5da9412f4e35",
+      "updated": true,
+      "updated_at": "2026-11-13T03:41:00+00:00",
+      "rbx_version": "version-4ea8e85481e34f46",
       "sunc": null,
       "free": false,
       "detected": false,
@@ -530,10 +530,10 @@
     "madius|windows": {
       "name": "Madius",
       "platform": "Windows",
-      "version": "1.11.9-beta",
-      "updated": false,
-      "updated_at": "2026-11-07T19:12:00+00:00",
-      "rbx_version": "version-f0ea5da9412f4e35",
+      "version": "1.11.10-beta",
+      "updated": true,
+      "updated_at": "2026-11-13T05:29:00+00:00",
+      "rbx_version": "version-4ea8e85481e34f46",
       "sunc": null,
       "free": true,
       "detected": false,
@@ -615,7 +615,7 @@
     "wave|windows": "https://cdn.weao.gg/slug/wave/logo.png"
   },
   "discord_message_ids": [
-    "1570643238732308572",
-    "1570643241580105882"
+    "1570762547341168693",
+    "1570762551833137305"
   ]
 }
