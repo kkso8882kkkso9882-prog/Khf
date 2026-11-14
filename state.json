@@ -1,5 +1,5 @@
 {
-  "collected_at": "2026-11-14T04:04:21.852674+00:00",
+  "collected_at": "2026-11-14T11:23:33.618412+00:00",
   "rbx": {
     "Windows": {
       "version": "version-4ea8e85481e34f46",
@@ -566,15 +566,15 @@
     "athena|windows": {
       "name": "Athena",
       "platform": "Windows",
-      "version": "1.0.2",
+      "version": "1.0.3",
       "updated": true,
-      "updated_at": "2026-11-10T17:10:00+00:00",
+      "updated_at": "2026-11-14T09:25:00+00:00",
       "rbx_version": "version-4ea8e85481e34f46",
       "sunc": 100,
-      "free": false,
+      "free": true,
       "detected": true,
       "cost": "$4.99 Weekly",
-      "key_system": false,
+      "key_system": true,
       "website": "https://getathena.gg/",
       "discord": "https://discord.gg/EWuswf5cK",
       "purchase": "https://wyv.gg/product/athena-executor/ref/weao",
@@ -615,10 +615,7 @@
     "wave|windows": "https://cdn.weao.gg/slug/wave/logo.png"
   },
   "discord_message_ids": [
-    "1571012894701916252",
-    "1571012896463523998",
-    "1571012897633730647",
-    "1571012898946285748",
-    "1571012900838047806"
+    "1571123422392488009",
+    "1571123424632512585"
   ]
 }
